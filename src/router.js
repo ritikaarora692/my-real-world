@@ -42,9 +42,10 @@ export default new Router({
       component: () => import("@/views/EditArticle.vue")
     },
     {
-      path: "/article/:article-slug",
-      name: "article",
-      component: () => import("@/views/Article.vue")
+      path: "/articles/:slug",
+      name: "Article",
+      component: () => import("@/views/Article.vue"),
+      props: true
     },
     {
       path: "/@:username",

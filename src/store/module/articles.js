@@ -4,12 +4,17 @@ export default {
   namespaced: true,
   state: {
     feed: [],
-    count: 0
+    count: 0,
+    article: null
   },
   mutations: {
     setArticles(state, { articles, articlesCount }) {
       state.feed = articles;
       state.count = articlesCount;
+    },
+    setArticle(state, { article }) {
+      debugger;
+      state.article = article;
     }
   },
   actions: {
@@ -46,6 +51,15 @@ export default {
       const response = await api.get(route);
       debugger;
       commit("setArticles", response.data);
+    },
+    async getArticle({ commit }) {
+      debugger;
+      let route = "/articles";
+      route += `/slug.slug`;
+      const response = await api.get(route);
+      debugger;
+      commit("setArticle", response.data);
+      debugger;
     }
   }
 };

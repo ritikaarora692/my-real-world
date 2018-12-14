@@ -7,6 +7,7 @@
       <h1>How to build webapps that scale</h1>
 
       <div class="article-meta">
+        <h1>{{article}}</h1>
         <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
         <div class="info">
           <a href="" class="author">Eric Simons</a>
@@ -120,3 +121,29 @@
 
 </div>
 </template>
+
+
+<script>
+export default {
+  props: ["slug"],
+  data: function() {
+    return {
+      article: {}
+    };
+  },
+  created() {
+    debugger;
+    this.$store
+      .dispatch("articles/getArticle", {
+        slug: this.slug
+      })
+      .then(response => {
+        debugger;
+        this.article = response;
+        debugger;
+      });
+
+    debugger;
+  }
+};
+</script>

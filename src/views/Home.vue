@@ -57,7 +57,7 @@ export default {
   },
   data: function() {
     return {
-      activeFeed: "global"
+      activeFeed: ""
     };
   },
   methods: {
@@ -74,10 +74,10 @@ export default {
           token: mytoken
         });
       }
-    },
-    created() {
-      this.setFeed("global");
     }
+  },
+  created() {
+    this.setFeed("global");
   },
   computed: {
     globalArticles() {
