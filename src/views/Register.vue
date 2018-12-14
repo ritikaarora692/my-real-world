@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     signup() {
-      debugger;
       this.$store
         .dispatch("users/registerUser", {
           email: this.email,
@@ -54,12 +53,10 @@ export default {
           username: this.username
         })
         .then(() => {
-          debugger;
           this.errors = [];
           this.$router.push({ name: "home" });
         })
         .catch(err => {
-          debugger;
           this.errors.push(err);
         });
     }

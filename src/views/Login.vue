@@ -52,7 +52,6 @@ export default {
           this.$router.push({ name: "home" });
         })
         .catch(err => {
-          debugger;
           this.errors.push(err);
         });
     }

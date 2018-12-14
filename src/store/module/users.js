@@ -9,6 +9,9 @@ export default {
   getters: {
     username(state) {
       return (state.user && state.user.username) || null;
+    },
+    user(state) {
+      return state.user || null;
     }
   },
   mutations: {
@@ -44,7 +47,6 @@ export default {
       }
     },
     registerUser: async function({ commit }, { email, password, username }) {
-      debugger;
       clearToken();
       try {
         const response = await api.post("/users", {
