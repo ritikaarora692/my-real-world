@@ -23,6 +23,5 @@ export default {
       return moment(dateString).format("MMMM Do, YYYY");
     }
   }
-}
+};
 </script>
-

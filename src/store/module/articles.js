@@ -53,7 +53,10 @@ export default {
       const response = await api.get(route);
       commit("setArticle", response.data);
     },
-    createArticle: async function({ commit }, { title, description, body,tagList,token }) {
+    createArticle: async function(
+      { commit },
+      { title, description, body, tagList, token }
+    ) {
       setToken(token);
       try {
         const response = await api.post("/articles", {

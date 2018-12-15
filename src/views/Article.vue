@@ -65,12 +65,11 @@ export default {
   data: function() {
     return {
       areCommentsLoading: true,
-      commentText : ""
+      commentText: ""
     };
   },
   created() {
-    this.$store
-      .dispatch("articles/getArticle", this.slug);
+    this.$store.dispatch("articles/getArticle", this.slug);
 
     this.$store
       .dispatch("comments/getComments", {
@@ -86,23 +85,24 @@ export default {
     },
     article() {
       return this.$store.state.articles.article;
-    },username() {
+    },
+    username() {
       return this.$store.getters["users/username"];
     }
   },
-  methods:{
-    postComment(){
+  methods: {
+    postComment() {
       this.areCommentsLoading = true;
       this.$store
-      .dispatch("comments/addNewComment", {
-        slug : this.slug,
-        body: this.commentText,
-        token : this.$store.getters["users/user"].token
-      })
-      .then(() => {
-        this.areCommentsLoading = false;
-        this.commentText = ""
-      });
+        .dispatch("comments/addNewComment", {
+          slug: this.slug,
+          body: this.commentText,
+          token: this.$store.getters["users/user"].token
+        })
+        .then(() => {
+          this.areCommentsLoading = false;
+          this.commentText = "";
+        });
     }
   }
 };

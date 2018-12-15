@@ -35,7 +35,7 @@ export default {
     return {
       title: "",
       description: "",
-      body:"",
+      body: "",
       tagList: []
     };
   },
@@ -47,12 +47,13 @@ export default {
           description: this.description,
           body: this.body,
           tagList: this.tagList,
-          token : this.$store.getters["users/user"].token
+          token: this.$store.getters["users/user"].token
         })
         .then(() => {
-          this.$router.push({ path: '/articles/'+this.$store.getters["articles/article"].slug });
-          
-        })
+          this.$router.push({
+            path: "/articles/" + this.$store.getters["articles/article"].slug
+          });
+        });
     }
   }
 };

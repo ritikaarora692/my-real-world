@@ -1,5 +1,4 @@
-import { api, setToken, clearToken } from "../api";
-import { debug } from "util";
+import { api, setToken } from "../api";
 
 export default {
   namespaced: true,
@@ -7,7 +6,7 @@ export default {
     comments: []
   },
   mutations: {
-    setComments(state, {comments }) {
+    setComments(state, { comments }) {
       state.comments = comments;
     },
     addComment(state, { comment }) {
@@ -22,7 +21,7 @@ export default {
       const response = await api.get(route);
       commit("setComments", response.data);
     },
-    addNewComment: async function({ commit }, { body,slug,token }) {
+    addNewComment: async function({ commit }, { body, slug, token }) {
       setToken(token);
       let route = "/articles/";
       route += slug;

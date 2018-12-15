@@ -33,12 +33,12 @@
 export default {
   props: ["article"],
   computed: {
-    article() {
+    articles() {
       return this.$store.state.articles.article;
     }
   },
   created() {
-    debugger
+    debugger;
   }
-}
+};
 </script>
