@@ -13,7 +13,6 @@ export default {
       state.count = articlesCount;
     },
     setArticle(state, { article }) {
-      debugger;
       state.article = article;
     }
   },
@@ -38,28 +37,40 @@ export default {
     },
     async getUserFeed({ commit }, payload = { page: 1 }) {
       clearToken();
-      debugger;
       let route = "/articles/feed";
       if (payload) {
         const { page = 1 } = payload;
         // route += page ? `?offset=${(page - 1) * 10} & limit=10` : "";
         route += page ? `?offset=${page - 1}` : "";
-        debugger;
         setToken(payload.token);
       }
-      debugger;
       const response = await api.get(route);
-      debugger;
       commit("setArticles", response.data);
     },
-    async getArticle({ commit }) {
-      debugger;
-      let route = "/articles";
-      route += `/slug.slug`;
+    async getArticle({ commit }, slug) {
+      let route = "/articles/";
+      route += slug;
       const response = await api.get(route);
-      debugger;
       commit("setArticle", response.data);
-      debugger;
+    },
+    createArticle: async function({ commit }, { title, description, body,tagList,token }) {
+      setToken(token);
+      try {
+        const response = await api.post("/articles", {
+          article: {
+            title,
+            description,
+            body,
+            tagList
+          }
+        });
+        if (response.data) {
+          commit("setArticle", response.data);
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
     }
   }
 };

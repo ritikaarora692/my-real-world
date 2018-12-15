@@ -1,5 +1,5 @@
 <template>
-    <div class="article-preview">
+    <div class="article-preview"> 
           <div class="article-meta">
             <a href="profile.html"><img :src="article.author.image" /></a>
             <div class="info">
@@ -9,11 +9,11 @@
             <button class="btn btn-outline-primary btn-sm pull-xs-right">
               <i class="ion-heart"></i> {{article.favoritesCount}}
             </button>
-          </div>
+          </div>{{article.slug}}
          <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
             <h1>{{article.title}}</h1>
             <p>{{article.description}}.</p>
-            <span @click="getArticle();">Read more...</span>
+            <span >Read more...</span>
          </router-link>
         </div>
 </template>

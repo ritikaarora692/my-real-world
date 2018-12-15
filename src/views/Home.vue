@@ -22,7 +22,6 @@
             </li>
           </ul>
         </div>
-
         <ArticlePreview v-for="article in globalArticles" :key="article.slug" :article="article">
         </ArticlePreview>
       </div>
@@ -66,12 +65,9 @@ export default {
         this.activeFeed = "global";
         this.$store.dispatch("articles/getGlobalFeed");
       } else if (feedType === "user") {
-        debugger;
         this.activeFeed = "user";
-        let mytoken = this.$store.getters["users/user"].token;
-        debugger;
         this.$store.dispatch("articles/getUserFeed", {
-          token: mytoken
+          token: this.$store.getters["users/user"].token
         });
       }
     }

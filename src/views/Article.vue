@@ -1,149 +1,109 @@
 <template>
-    <div class="article-page">
+  <div class="article-page">
+    <div class="banner">
+      <div class="container" v-if="article">
+        <h1>{{article.title}}</h1>
+        <ArticleHeader :article="article"></ArticleHeader>
+      </div>
+      <div class="container" v-else>Please wait while we are loading</div>
+    </div>
 
-  <div class="banner">
-    <div class="container">
-
-      <h1>How to build webapps that scale</h1>
-
-      <div class="article-meta">
-        <h1>{{article}}</h1>
-        <a href=""><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-        <div class="info">
-          <a href="" class="author">Eric Simons</a>
-          <span class="date">January 20th</span>
+    <div class="container page">
+      <div class="row article-content">
+        <div class="col-md-12" v-if="article">
+          <p>{{article.body}}</p>
         </div>
-        <button class="btn btn-sm btn-outline-secondary">
-          <i class="ion-plus-round"></i>
-          &nbsp;
-          Follow Eric Simons <span class="counter">(10)</span>
-        </button>
-        &nbsp;&nbsp;
-        <button class="btn btn-sm btn-outline-primary">
-          <i class="ion-heart"></i>
-          &nbsp;
-          Favorite Post <span class="counter">(29)</span>
-        </button>
       </div>
 
+      <hr/>
+
+      <div class="article-actions">
+        <div  v-if="article">
+        <ArticleHeader :article="article"></ArticleHeader>
+      </div>
+      <div v-else>Please wait while we are loading</div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-md-8 offset-md-2">
+          <form class="card comment-form">
+            <div class="card-block">
+              <textarea v-model="commentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+            </div>
+            <div class="card-footer" v-if="username">
+              <img src="article.author.image" class="comment-author-img">
+              <button @click="postComment" class="btn btn-sm btn-primary">Post Comment</button>
+            </div>
+            <div class="card-footer" v-else>
+              <router-link class="nav-link" to="/login">Sign in
+              </router-link> or 
+              <router-link class="nav-link" to="/register">Sign up
+              </router-link> to post comment.
+            </div>
+          </form>
+          <template v-if="areCommentsLoading">
+            <p>Please wait while we are loading Comments</p>
+          </template>
+          <template v-else>
+            <Comment v-for="comment in comments" :key="comment.id" :comment="comment"></Comment>
+          </template>
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="container page">
-
-    <div class="row article-content">
-      <div class="col-md-12">
-        <p>
-        Web development technologies have evolved at an incredible clip over the past few years.
-        </p>
-        <h2 id="introducing-ionic">Introducing RealWorld.</h2>
-        <p>It's a great solution for learning how other frameworks work.</p>
-      </div>
-    </div>
-
-    <hr />
-
-    <div class="article-actions">
-      <div class="article-meta">
-        <a href="profile.html"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-        <div class="info">
-          <a href="" class="author">Eric Simons</a>
-          <span class="date">January 20th</span>
-        </div>
-
-        <button class="btn btn-sm btn-outline-secondary">
-          <i class="ion-plus-round"></i>
-          &nbsp;
-          Follow Eric Simons <span class="counter">(10)</span>
-        </button>
-        &nbsp;
-        <button class="btn btn-sm btn-outline-primary">
-          <i class="ion-heart"></i>
-          &nbsp;
-          Favorite Post <span class="counter">(29)</span>
-        </button>
-      </div>
-    </div>
-
-    <div class="row">
-
-      <div class="col-xs-12 col-md-8 offset-md-2">
-
-        <form class="card comment-form">
-          <div class="card-block">
-            <textarea class="form-control" placeholder="Write a comment..." rows="3"></textarea>
-          </div>
-          <div class="card-footer">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-            <button class="btn btn-sm btn-primary">
-             Post Comment
-            </button>
-          </div>
-        </form>
-        
-        <div class="card">
-          <div class="card-block">
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-          <div class="card-footer">
-            <a href="" class="comment-author">
-              <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-            </a>
-            &nbsp;
-            <a href="" class="comment-author">Jacob Schmidt</a>
-            <span class="date-posted">Dec 29th</span>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-block">
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          </div>
-          <div class="card-footer">
-            <a href="" class="comment-author">
-              <img src="http://i.imgur.com/Qr71crq.jpg" class="comment-author-img" />
-            </a>
-            &nbsp;
-            <a href="" class="comment-author">Jacob Schmidt</a>
-            <span class="date-posted">Dec 29th</span>
-            <span class="mod-options">
-              <i class="ion-edit"></i>
-              <i class="ion-trash-a"></i>
-            </span>
-          </div>
-        </div>
-        
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
 </template>
 
 
 <script>
+import Comment from "@/components/Comment.vue";
+import ArticleHeader from "@/components/ArticleHeader.vue";
 export default {
+  components: {
+    Comment,
+    ArticleHeader
+  },
   props: ["slug"],
   data: function() {
     return {
-      article: {}
+      areCommentsLoading: true,
+      commentText : ""
     };
   },
   created() {
-    debugger;
     this.$store
-      .dispatch("articles/getArticle", {
+      .dispatch("articles/getArticle", this.slug);
+
+    this.$store
+      .dispatch("comments/getComments", {
         slug: this.slug
       })
-      .then(response => {
-        debugger;
-        this.article = response;
-        debugger;
+      .then(() => {
+        this.areCommentsLoading = false;
       });
-
-    debugger;
+  },
+  computed: {
+    comments() {
+      return this.$store.state.comments.comments || [];
+    },
+    article() {
+      return this.$store.state.articles.article;
+    },username() {
+      return this.$store.getters["users/username"];
+    }
+  },
+  methods:{
+    postComment(){
+      this.areCommentsLoading = true;
+      this.$store
+      .dispatch("comments/addNewComment", {
+        slug : this.slug,
+        body: this.commentText,
+        token : this.$store.getters["users/user"].token
+      })
+      .then(() => {
+        this.areCommentsLoading = false;
+        this.commentText = ""
+      });
+    }
   }
 };
 </script>

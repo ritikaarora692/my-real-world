@@ -1,7 +1,7 @@
 <template>
     <div class="editor-page">
   <div class="container page">
-    <div class="row">
+    <div class="row">{{article}}
 
       <div class="col-md-10 offset-md-1 col-xs-12">
         <form>
@@ -29,3 +29,16 @@
   </div>
 </div>
 </template>
+<script>
+export default {
+  props: ["article"],
+  computed: {
+    article() {
+      return this.$store.state.articles.article;
+    }
+  },
+  created() {
+    debugger
+  }
+}
+</script>
