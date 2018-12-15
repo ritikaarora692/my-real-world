@@ -13,6 +13,7 @@ export default {
       state.count = articlesCount;
     },
     setArticle(state, { article }) {
+      debugger;
       state.article = article;
     }
   },
@@ -68,6 +69,36 @@ export default {
           }
         });
         if (response.data) {
+          debugger;
+          commit("setArticle", response.data);
+          this.$router.push({
+            path: "/articles/" + response.data.slug
+          });
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    updateArticle: async function(
+      { commit },
+      { title, description, body, tagList, slug, token }
+    ) {
+      debugger;
+      let route = "/articles/";
+      route += slug;
+      setToken(token);
+      try {
+        const response = await api.put(route, {
+          article: {
+            title,
+            description,
+            body,
+            tagList
+          }
+        });
+        if (response.data) {
+          debugger;
           commit("setArticle", response.data);
         }
       } catch (e) {

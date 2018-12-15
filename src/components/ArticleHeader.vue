@@ -11,7 +11,6 @@
       <i class="ion-plus-round"></i>
       &nbsp;
       Follow {{article.author.username}}
-      <span class="counter">(10)</span>
     </button>
     <router-link :to="{path: '/editor/'+ article.slug}" class="preview-link">
       <button
@@ -22,7 +21,8 @@
         &nbsp;
         Edit Article
       </button>
-    </router-link>&nbsp;&nbsp;
+    </router-link>
+    &nbsp;&nbsp;
     <button
       v-if="article.author.username != username"
       class="btn btn-sm btn-outline-primary"

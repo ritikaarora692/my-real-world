@@ -41,19 +41,13 @@ export default {
   },
   methods: {
     createArticle() {
-      this.$store
-        .dispatch("articles/createArticle", {
-          title: this.title,
-          description: this.description,
-          body: this.body,
-          tagList: this.tagList,
-          token: this.$store.getters["users/user"].token
-        })
-        .then(() => {
-          this.$router.push({
-            path: "/articles/" + this.$store.getters["articles/article"].slug
-          });
-        });
+      this.$store.dispatch("articles/createArticle", {
+        title: this.title,
+        description: this.description,
+        body: this.body,
+        tagList: this.tagList,
+        token: this.$store.getters["users/user"].token
+      });
     }
   }
 };

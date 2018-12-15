@@ -12,6 +12,9 @@
       <div class="row article-content">
         <div class="col-md-12" v-if="article">
           <p>{{article.body}}</p>
+          <div v-for="tag in article.tags" :key=tag>
+              <div class="tag-pill tag-default">tag</div>
+          </div>
         </div>
       </div>
 
@@ -69,6 +72,7 @@ export default {
     };
   },
   created() {
+    debugger;
     this.$store.dispatch("articles/getArticle", this.slug);
 
     this.$store

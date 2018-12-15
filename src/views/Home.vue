@@ -80,6 +80,7 @@ export default {
       return this.$store.state.articles.feed || [];
     },
     username() {
+      debugger;
       return this.$store.getters["users/username"];
     }
   }

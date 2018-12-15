@@ -9,7 +9,7 @@
             <button class="btn btn-outline-primary btn-sm pull-xs-right">
               <i class="ion-heart"></i> {{article.favoritesCount}}
             </button>
-          </div>{{article.slug}}
+          </div>
          <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
             <h1>{{article.title}}</h1>
             <p>{{article.description}}.</p>
