@@ -28,6 +28,13 @@ export default {
       const user = await api.get("/user");
       commit("setUser", user);
     },
+    getProfile: async function({ commit }, username) {
+      debugger;
+      let route = "/profiles/";
+      route += username;
+      const response = await api.get(route);
+      commit("setProfile", response.data.profile);
+    },
     loginUser: async function({ commit }, { email, password }) {
       clearToken();
       try {

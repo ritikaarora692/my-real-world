@@ -6,7 +6,7 @@
               <a href="" class="author">{{article.author.username}}</a>
               <span class="date">{{formatDate(article.createdAt)}}</span>
             </div>
-            <button class="btn btn-outline-primary btn-sm pull-xs-right">
+            <button @click="toggleArticleFavorite" class="btn btn-outline-primary btn-sm pull-xs-right">
               <i class="ion-heart"></i> {{article.favoritesCount}}
             </button>
           </div>
@@ -25,6 +25,39 @@ export default {
   methods: {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
+    },
+    toggleArticleFavorite() {
+      debugger;
+      if (this.$store.getters["users/user"]) {
+        if (this.article.favorited == false) {
+          debugger;
+          this.$store
+            .dispatch("articles/favoriteArticle", {
+              slug: this.article.slug,
+              token: this.$store.getters["users/user"].token
+            })
+            .then(() => {
+              debugger;
+              this.$store.dispatch("articles/getGlobalFeed");
+            });
+        } else {
+          debugger;
+          this.$store
+            .dispatch("articles/unfavoriteArticle", {
+              slug: this.article.slug,
+              token: this.$store.getters["users/user"].token
+            })
+            .then(() => {
+              debugger;
+              this.$store.dispatch("articles/getGlobalFeed");
+            });
+        }
+      } else {
+        debugger;
+        this.$router.push({
+          path: "/register"
+        });
+      }
     }
   }
 };

@@ -20,6 +20,9 @@
             <li class="nav-item">
               <a class="nav-link" @click="setFeed('global');" :class="{active: activeFeed ==='global'}">Global Feed</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" v-if="activeTag" :class="{active: activeFeed ==='tag'}">#{{activeTag}}</a>
+            </li>
           </ul>
         </div>
         <ArticlePreview v-for="article in globalArticles" :key="article.slug" :article="article">
@@ -31,14 +34,14 @@
           <p>Popular Tags</p>
 
           <div class="tag-list">
-            <a href="" class="tag-pill tag-default">programming</a>
-            <a href="" class="tag-pill tag-default">javascript</a>
-            <a href="" class="tag-pill tag-default">emberjs</a>
-            <a href="" class="tag-pill tag-default">angularjs</a>
-            <a href="" class="tag-pill tag-default">react</a>
-            <a href="" class="tag-pill tag-default">mean</a>
-            <a href="" class="tag-pill tag-default">node</a>
-            <a href="" class="tag-pill tag-default">rails</a>
+            <a @click="setTagValue('programming');" class="tag-pill tag-default">programming</a>
+            <a @click="setTagValue('javascript');" class="tag-pill tag-default">javascript</a>
+            <a @click="setTagValue('emberjs');" class="tag-pill tag-default">emberjs</a>
+            <a @click="setTagValue('angularjs');" class="tag-pill tag-default">angularjs</a>
+            <a @click="setTagValue('react');" class="tag-pill tag-default">react</a>
+            <a @click="setTagValue('mean');" class="tag-pill tag-default">mean</a>
+            <a @click="setTagValue('node');" class="tag-pill tag-default">node</a>
+            <a @click="setTagValue('rails');" class="tag-pill tag-default">rails</a>
           </div>
         </div>
       </div>
@@ -56,11 +59,13 @@ export default {
   },
   data: function() {
     return {
-      activeFeed: ""
+      activeFeed: "",
+      activeTag: null
     };
   },
   methods: {
     setFeed(feedType) {
+      debugger;
       if (feedType === "global") {
         this.activeFeed = "global";
         this.$store.dispatch("articles/getGlobalFeed");
@@ -69,7 +74,19 @@ export default {
         this.$store.dispatch("articles/getUserFeed", {
           token: this.$store.getters["users/user"].token
         });
+      } else if (feedType === "tag") {
+        debugger;
+        this.activeFeed = "tag";
+        this.$store.dispatch("articles/getGlobalFeed", {
+          tag: this.activeTag,
+          page: 1
+        });
       }
+    },
+    setTagValue(programming) {
+      debugger;
+      this.activeTag = programming;
+      this.setFeed("tag");
     }
   },
   created() {
@@ -80,7 +97,6 @@ export default {
       return this.$store.state.articles.feed || [];
     },
     username() {
-      debugger;
       return this.$store.getters["users/username"];
     }
   }

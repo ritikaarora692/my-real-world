@@ -51,7 +51,8 @@ export default new Router({
     {
       path: "/@:username",
       name: "profile",
-      component: () => import("@/views/Profile.vue")
+      component: () => import("@/views/Profile.vue"),
+      props: true
     }
   ]
 });

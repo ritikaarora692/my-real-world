@@ -32,8 +32,8 @@
             <div class="card-block">
               <textarea v-model="commentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
             </div>
-            <div class="card-footer" v-if="username">
-              <img src="article.author.image" class="comment-author-img">
+            <div class="card-footer" v-if="user">
+              <img src="user.image" class="comment-author-img">
               <button @click="postComment" class="btn btn-sm btn-primary">Post Comment</button>
             </div>
             <div class="card-footer" v-else>
@@ -90,8 +90,8 @@ export default {
     article() {
       return this.$store.state.articles.article;
     },
-    username() {
-      return this.$store.getters["users/username"];
+    user() {
+      return this.$store.getters["users/user"];
     }
   },
   methods: {

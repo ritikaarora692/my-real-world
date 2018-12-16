@@ -20,20 +20,23 @@ export default {
   actions: {
     async getGlobalFeed({ commit }, payload = { page: 1 }) {
       let route = "/articles";
+      debugger;
       if (payload) {
         const {
           tag = null,
           author = null,
-          favourited = null,
+          favorited = null,
           page = 1
         } = payload;
         route += tag ? `?tag=${tag}&` : "";
         route += author ? `?author=${author}&` : "";
-        route += favourited ? `?favourited=${favourited}&` : "";
+        route += favorited ? `?favorited=${favorited}&` : "";
         route += page ? `?offset=${page - 1}` : "";
         //route += page ? page : "";
       }
+      debugger;
       const response = await api.get(route);
+      debugger;
       commit("setArticles", response.data);
     },
     async getUserFeed({ commit }, payload = { page: 1 }) {
@@ -97,6 +100,40 @@ export default {
             tagList
           }
         });
+        if (response.data) {
+          debugger;
+          commit("setArticle", response.data);
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    favoriteArticle: async function({ commit }, { slug, token }) {
+      setToken(token);
+      try {
+        let route = "/articles/";
+        route += slug;
+        route += "/favorite";
+        debugger;
+        const response = await api.post(route);
+        if (response.data) {
+          debugger;
+          commit("setArticle", response.data);
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    unfavoriteArticle: async function({ commit }, { slug, token }) {
+      setToken(token);
+      try {
+        let route = "/articles/";
+        route += slug;
+        route += "/favorite";
+        debugger;
+        const response = await api.delete(route);
         if (response.data) {
           debugger;
           commit("setArticle", response.data);
