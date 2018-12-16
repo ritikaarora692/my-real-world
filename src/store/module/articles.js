@@ -14,7 +14,8 @@ export default {
     },
     setArticle(state, { article }) {
       state.article = article;
-    }
+    },
+    deleteArticle() {}
   },
   actions: {
     async getGlobalFeed({ commit }, payload = { page: 1 }) {
@@ -123,7 +124,7 @@ export default {
         throw e;
       }
     },
-    deleteArticle: async function({ slug, token }) {
+    deleteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {
         let route = "/articles/" + slug;
@@ -132,6 +133,7 @@ export default {
         console.error(e);
         throw e;
       }
+      commit("deleteArticle");
     }
   }
 };

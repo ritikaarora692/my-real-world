@@ -11,7 +11,8 @@ export default {
     },
     addComment(state, { comment }) {
       state.comments.push(comment);
-    }
+    },
+    deleteComment() {}
   },
   actions: {
     async getComments({ commit }, { slug }) {
@@ -19,7 +20,7 @@ export default {
       const response = await api.get(route);
       commit("setComments", response.data);
     },
-    addNewComment: async function({ body, slug, token }) {
+    addNewComment: async function({ commit }, { body, slug, token }) {
       setToken(token);
       let route = "/articles/" + slug + "/comments";
       try {
@@ -32,8 +33,9 @@ export default {
         console.error(e);
         throw e;
       }
+      commit("deleteComment");
     },
-    deleteComment: async function({ slug, commentId, token }) {
+    deleteComment: async function({ commit }, { slug, commentId, token }) {
       setToken(token);
       try {
         let route = "/articles/" + slug + "/comments/" + commentId;
@@ -42,6 +44,7 @@ export default {
         console.error(e);
         throw e;
       }
+      commit("deleteComment");
     }
   }
 };

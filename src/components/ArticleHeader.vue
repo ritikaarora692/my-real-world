@@ -51,6 +51,7 @@ export default {
       return moment(dateString).format("MMMM Do, YYYY");
     },
     deleteArticle() {
+      debugger;
       this.$store
         .dispatch("articles/deleteArticle", {
           slug: this.article.slug,
