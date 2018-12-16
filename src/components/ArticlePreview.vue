@@ -1,27 +1,35 @@
 <template>
-    <div class="article-preview"> 
-          <div class="article-meta">
-            <a href="profile.html"><img :src="article.author.image" /></a>
-            <div class="info">
-              <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}
-              </router-link>
-              <span class="date">{{formatDate(article.createdAt)}}</span>
-            </div>
-            <button @click="toggleArticleFavorite" class="btn btn-sm pull-xs-right btn-primary" :class="{'btn-outline-primary': !this.article.favorited }">
-              <i class="ion-heart"></i> {{article.favoritesCount}}
-            </button>
-          </div>
-         <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
-            <h1>{{article.title}}</h1>
-            <p>{{article.description}}.</p>
-            <span >Read more...</span>
-            <ul class="tag-list" >
-            <li class="tag-default tag-pill tag-outline"  v-for="tag in article.tagList" :key="tag">
-              {{tag}}
-            </li>
-          </ul>
-         </router-link>
-        </div>
+  <div class="article-preview">
+    <div class="article-meta">
+      <a href="profile.html">
+        <img :src="article.author.image">
+      </a>
+      <div class="info">
+        <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}</router-link>
+        <span class="date">{{formatDate(article.createdAt)}}</span>
+      </div>
+      <button
+        @click="toggleArticleFavorite"
+        class="btn btn-sm pull-xs-right btn-primary"
+        :class="{'btn-outline-primary': !this.article.favorited }"
+      >
+        <i class="ion-heart"></i>
+        {{article.favoritesCount}}
+      </button>
+    </div>
+    <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
+      <h1>{{article.title}}</h1>
+      <p>{{article.description}}.</p>
+      <span>Read more...</span>
+      <ul class="tag-list">
+        <li
+          class="tag-default tag-pill tag-outline"
+          v-for="tag in article.tagList"
+          :key="tag"
+        >{{tag}}</li>
+      </ul>
+    </router-link>
+  </div>
 </template>
 
 <script>

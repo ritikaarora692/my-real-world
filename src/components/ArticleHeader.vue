@@ -4,8 +4,7 @@
       <img :src="article.author.image">
     </a>
     <div class="info">
-      <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}
-              </router-link>
+      <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}</router-link>
       <span class="date">{{formatDate(article.createdAt)}}</span>
     </div>
     <button v-if="article.author.username != username" class="btn btn-sm btn-outline-secondary">
@@ -14,19 +13,17 @@
       Follow {{article.author.username}}
     </button>
     <router-link :to="{path: '/editor/'+ article.slug}" class="preview-link">
-      <button
-        v-if="article.author.username == username"
-        class="btn btn-sm btn-outline-secondary" 
-      >
+      <button v-if="article.author.username == username" class="btn btn-sm btn-outline-secondary">
         <i class="ion-edit"></i>
         &nbsp;
         Edit Article
       </button>
-    </router-link>
-    &nbsp;&nbsp;
+    </router-link>&nbsp;&nbsp;
     <button
       v-if="article.author.username != username"
-      class="btn btn-sm btn-outline-primary" @click="toggleArticleFavorite" :class="{'btn-outline-primary': !article.favorited }"
+      class="btn btn-sm btn-outline-primary"
+      @click="toggleArticleFavorite"
+      :class="{'btn-outline-primary': !article.favorited }"
     >
       <i class="ion-heart"></i>
       &nbsp;
@@ -95,7 +92,6 @@ export default {
   },
   computed: {
     username() {
-      debugger;
       return this.$store.getters["users/username"];
     }
   }

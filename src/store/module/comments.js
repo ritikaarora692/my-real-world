@@ -15,19 +15,15 @@ export default {
   },
   actions: {
     async getComments({ commit }, { slug }) {
-      let route = "/articles/";
-      route += slug;
-      route += "/comments";
+      let route = "/articles/" + slug + "/comments";
       const response = await api.get(route);
       commit("setComments", response.data);
     },
-    addNewComment: async function({ commit }, { body, slug, token }) {
+    addNewComment: async function({ body, slug, token }) {
       setToken(token);
-      let route = "/articles/";
-      route += slug;
-      route += "/comments";
+      let route = "/articles/" + slug + "/comments";
       try {
-        const response = await api.post(route, {
+        await api.post(route, {
           comment: {
             body
           }
@@ -37,11 +33,10 @@ export default {
         throw e;
       }
     },
-    deleteComment: async function({ commit }, { slug, commentId, token }) {
+    deleteComment: async function({ slug, commentId, token }) {
       setToken(token);
       try {
-        let route = "/articles/";
-        route += slug + "/comments/" + commentId;
+        let route = "/articles/" + slug + "/comments/" + commentId;
         await api.delete(route);
       } catch (e) {
         console.error(e);

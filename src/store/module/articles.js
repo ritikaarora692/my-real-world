@@ -78,8 +78,7 @@ export default {
       { commit },
       { title, description, body, tagList, slug, token }
     ) {
-      let route = "/articles/";
-      route += slug;
+      let route = "/articles/" + slug;
       setToken(token);
       try {
         const response = await api.put(route, {
@@ -101,9 +100,7 @@ export default {
     favoriteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {
-        let route = "/articles/";
-        route += slug;
-        route += "/favorite";
+        let route = "/articles/" + slug + "/favorite";
         const response = await api.post(route);
         if (response.data) {
           commit("setArticle", response.data);
@@ -116,9 +113,7 @@ export default {
     unfavoriteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {
-        let route = "/articles/";
-        route += slug;
-        route += "/favorite";
+        let route = "/articles/" + slug + "/favorite";
         const response = await api.delete(route);
         if (response.data) {
           commit("setArticle", response.data);
@@ -128,12 +123,11 @@ export default {
         throw e;
       }
     },
-    deleteArticle: async function({ commit }, { slug, token }) {
+    deleteArticle: async function({ slug, token }) {
       setToken(token);
       try {
-        let route = "/articles/";
-        route += slug;
-        const response = await api.delete(route);
+        let route = "/articles/" + slug;
+        await api.delete(route);
       } catch (e) {
         console.error(e);
         throw e;

@@ -12,37 +12,42 @@
       <div class="row article-content">
         <div class="col-md-12" v-if="article">
           <p>{{article.body}}</p>
-          <ul class="tag-list" >
-            <li class="tag-default tag-pill tag-outline"  v-for="tag in article.tagList" :key="tag">
-              {{tag}}
-            </li>
+          <ul class="tag-list">
+            <li
+              class="tag-default tag-pill tag-outline"
+              v-for="tag in article.tagList"
+              :key="tag"
+            >{{tag}}</li>
           </ul>
         </div>
       </div>
 
-      <hr/>
+      <hr>
 
       <div class="article-actions">
-        <div  v-if="article">
-        <ArticleHeader :article="article"></ArticleHeader>
-      </div>
-      <div v-else>Please wait while we are loading</div>
+        <div v-if="article">
+          <ArticleHeader :article="article"></ArticleHeader>
+        </div>
+        <div v-else>Please wait while we are loading</div>
       </div>
       <div class="row">
         <div class="col-xs-12 col-md-8 offset-md-2">
           <form class="card comment-form">
             <div class="card-block">
-              <textarea v-model="commentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
+              <textarea
+                v-model="commentText"
+                class="form-control"
+                placeholder="Write a comment..."
+                rows="3"
+              ></textarea>
             </div>
             <div class="card-footer" v-if="isLoggedIn">
               <img :src="user.image" v-if="user" class="comment-author-img">
               <button @click="postComment" class="btn btn-sm btn-primary">Post Comment</button>
             </div>
             <div class="card-footer" v-else>
-              <router-link class="nav-link" to="/login">Sign in
-              </router-link> or 
-              <router-link class="nav-link" to="/register">Sign up
-              </router-link> to post comment.
+              <router-link class="nav-link" to="/login">Sign in</router-link>or
+              <router-link class="nav-link" to="/register">Sign up</router-link>to post comment.
             </div>
           </form>
           <template v-if="areCommentsLoading">

@@ -8,7 +8,6 @@ export default {
     isLoggedIn: !!localStorage.getItem("token")
   },
   getters: {
-
     username(state) {
       return (state.user && state.user.username) || null;
     },
@@ -16,8 +15,8 @@ export default {
       return state.user || null;
     },
     isLoggedIn: state => {
-      return state.isLoggedIn
-     }
+      return state.isLoggedIn;
+    }
   },
   mutations: {
     setUser(state, payload) {
@@ -27,10 +26,10 @@ export default {
     setProfile(state, profile) {
       state.profile = profile;
     },
-    LOGIN (state) {
+    login(state) {
       state.isLoggedIn = true;
     },
-    LOGOUT(state) {
+    logout(state) {
       state.isLoggedIn = false;
     }
   },
@@ -40,8 +39,7 @@ export default {
       commit("setUser", user);
     },
     getProfile: async function({ commit }, username) {
-      let route = "/profiles/";
-      route += username;
+      let route = "/profiles/" + username;
       const response = await api.get(route);
       commit("setProfile", response.data.profile);
     },
@@ -55,9 +53,9 @@ export default {
           }
         });
         if (response.data.user) {
-          localStorage.setItem('token', response.data.user.token)
+          localStorage.setItem("token", response.data.user.token);
           commit("setUser", response.data.user);
-          commit("LOGIN");
+          commit("login");
         }
       } catch (e) {
         console.error(e);
@@ -66,7 +64,7 @@ export default {
     },
     logout({ commit }) {
       localStorage.removeItem("token");
-      commit("LOGOUT");
+      commit("logout");
     },
     registerUser: async function({ commit }, { email, password, username }) {
       clearToken();
@@ -79,7 +77,7 @@ export default {
           }
         });
         if (response.data.user) {
-          localStorage.setItem('token', response.data.user.token)
+          localStorage.setItem("token", response.data.user.token);
           commit("setUser", response.data.user);
         }
       } catch (e) {

@@ -11,9 +11,9 @@
       <a href class="comment-author">{{comment.author.username}}</a>
       <span class="date-posted">{{formatDate(comment.createdAt)}}</span>
       <span class="mod-options" :v-if="username == comment.author.username">
-        <i class="ion-edit"  @click="editComment"></i>
+        <i class="ion-edit" @click="editComment"></i>
         &nbsp;
-        <i class="ion-trash-a " @click="deleteComment"></i>
+        <i class="ion-trash-a" @click="deleteComment"></i>
       </span>
     </div>
   </div>
