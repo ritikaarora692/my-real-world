@@ -4,15 +4,20 @@ export default {
   namespaced: true,
   state: {
     user: null,
-    profile: null
+    profile: null,
+    isLoggedIn: !!localStorage.getItem("token")
   },
   getters: {
+
     username(state) {
       return (state.user && state.user.username) || null;
     },
     user(state) {
       return state.user || null;
-    }
+    },
+    isLoggedIn: state => {
+      return state.isLoggedIn
+     }
   },
   mutations: {
     setUser(state, payload) {
@@ -21,6 +26,12 @@ export default {
 
     setProfile(state, profile) {
       state.profile = profile;
+    },
+    LOGIN (state) {
+      state.isLoggedIn = true;
+    },
+    LOGOUT(state) {
+      state.isLoggedIn = false;
     }
   },
   actions: {
@@ -44,13 +55,18 @@ export default {
           }
         });
         if (response.data.user) {
-          setToken(response.data.user.token);
+          localStorage.setItem('token', response.data.user.token)
           commit("setUser", response.data.user);
+          commit("LOGIN");
         }
       } catch (e) {
         console.error(e);
         throw e;
       }
+    },
+    logout({ commit }) {
+      localStorage.removeItem("token");
+      commit("LOGOUT");
     },
     registerUser: async function({ commit }, { email, password, username }) {
       clearToken();
@@ -63,7 +79,7 @@ export default {
           }
         });
         if (response.data.user) {
-          setToken(response.data.user.token);
+          localStorage.setItem('token', response.data.user.token)
           commit("setUser", response.data.user);
         }
       } catch (e) {
@@ -71,8 +87,10 @@ export default {
         throw e;
       }
     },
-    updateUser: async function({ commit }, { username, email, bio, image, token }) {
-      debugger
+    updateUser: async function(
+      { commit },
+      { username, email, bio, image, token }
+    ) {
       setToken(token);
       try {
         const response = await api.put("/user", {

@@ -34,8 +34,8 @@
             <div class="card-block">
               <textarea v-model="commentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
             </div>
-            <div class="card-footer" v-if="user">
-              <img :src="user.image" class="comment-author-img">
+            <div class="card-footer" v-if="isLoggedIn">
+              <img :src="user.image" v-if="user" class="comment-author-img">
               <button @click="postComment" class="btn btn-sm btn-primary">Post Comment</button>
             </div>
             <div class="card-footer" v-else>
@@ -92,7 +92,11 @@ export default {
       return this.$store.state.articles.article;
     },
     user() {
+      debugger;
       return this.$store.getters["users/user"];
+    },
+    isLoggedIn() {
+      return this.$store.getters["users/isLoggedIn"];
     }
   },
   methods: {
@@ -102,12 +106,12 @@ export default {
         .dispatch("comments/addNewComment", {
           slug: this.slug,
           body: this.commentText,
-          token: this.$store.getters["users/user"].token
+          token: localStorage.getItem("token")
         })
         .then(() => {
           this.$store.dispatch("comments/getComments", {
-        slug: this.slug
-      });
+            slug: this.slug
+          });
           this.areCommentsLoading = false;
           this.commentText = "";
         });

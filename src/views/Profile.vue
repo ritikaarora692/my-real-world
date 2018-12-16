@@ -85,9 +85,9 @@ export default {
     authorFeed() {
       this.isFavorite = false;
       this.$store.dispatch("articles/getGlobalFeed", {
-      author: this.username,
-      page: 1
-    });
+        author: this.username,
+        page: 1
+      });
     }
   }
 };

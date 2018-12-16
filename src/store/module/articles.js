@@ -1,4 +1,4 @@
-import { api, setToken, clearToken } from "../api";
+import { api, setToken } from "../api";
 
 export default {
   namespaced: true,
@@ -18,7 +18,6 @@ export default {
   },
   actions: {
     async getGlobalFeed({ commit }, payload = { page: 1 }) {
-      debugger
       let route = "/articles";
       if (payload) {
         const {
@@ -37,7 +36,6 @@ export default {
       commit("setArticles", response.data);
     },
     async getUserFeed({ commit }, payload = { page: 1 }) {
-      debugger
       setToken(payload.token);
       let route = "/articles/feed";
       if (payload) {
@@ -45,9 +43,7 @@ export default {
         // route += page ? `?offset=${(page - 1) * 10} & limit=10` : "";
         route += page ? `?offset=${page - 1}` : "";
       }
-      debugger
       const response = await api.get(route);
-      debugger
       commit("setArticles", response.data);
     },
     async getArticle({ commit }, slug) {

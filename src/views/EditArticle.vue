@@ -47,7 +47,7 @@ export default {
           body: document.getElementById("myBody").value,
           tagList: document.getElementById("myTags").value,
           slug: this.article.slug,
-          token: this.$store.getters["users/user"].token
+          token: localStorage.getItem("token")
         })
         .then(() => {
           this.$router.push({

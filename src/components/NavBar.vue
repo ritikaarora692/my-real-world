@@ -7,30 +7,30 @@
             <!-- Add "active" class when you're on that page" -->
             <a class="nav-link active" href="">Home</a>
           </li>
-          <li v-if="username" class="nav-item">
+          <li v-if="isLoggedIn" class="nav-item">
             <router-link class="nav-link" to="/editor">
               <i class="ion-compose"></i>&nbsp;New Post
               </router-link>
           </li>
-          <li v-if="username" class="nav-item">
+          <li v-if="isLoggedIn" class="nav-item">
               <router-link class="nav-link" to="/settings">
               <i class="ion-gear-a"></i>&nbsp;Settings
               </router-link>
           </li>
-          <li v-if="username == null" class="nav-item">
+          <li v-if="!isLoggedIn" class="nav-item">
               <router-link class="nav-link" to="/login">Sign in
               </router-link>
           </li>
-          <li v-if="username == null" class="nav-item">
+          <li v-if="!isLoggedIn" class="nav-item">
               <router-link class="nav-link" to="/register">Sign up
               </router-link>
           </li>
-          <li v-if="username" class="nav-item">
+          <li v-if="isLoggedIn" class="nav-item">
               <router-link class="nav-link" :to="`/@${username}`">{{username}}
               </router-link>
           </li>
-          <li v-if="username" class="nav-item">
-              <a class="nav-link" @click="logout">logout
+          <li v-if="isLoggedIn" class="nav-item">
+              <a class="nav-link" href="" @click="logout">Logout
               </a>
           </li>
         </ul>
@@ -41,14 +41,26 @@
 <script>
 export default {
   computed: {
+    isLoggedIn() {
+      debugger;
+      return this.$store.getters["users/isLoggedIn"];
+    },
     username() {
+      debugger;
       return this.$store.getters["users/username"];
     }
   },
-  methods :{
-    logout(){
-      debugger
-      //remove token
+  methods: {
+    logout() {
+      this.$store
+        .dispatch("users/logout")
+        .then(() => {
+          this.errors = [];
+          this.$router.push({ name: "login" });
+        })
+        .catch(err => {
+          this.errors.push(err);
+        });
     }
   }
 };

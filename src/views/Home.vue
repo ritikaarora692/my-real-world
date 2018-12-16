@@ -15,7 +15,7 @@
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link" v-if="username" @click="setFeed('user');" :class="{ active : activeFeed ==='user' }">Your Feed</a>
+              <a class="nav-link" v-if="isLoggedIn" @click="setFeed('user');" :class="{ active : activeFeed ==='user' }">Your Feed</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" @click="setFeed('global');" :class="{active: activeFeed ==='global' }">Global Feed</a>
@@ -72,14 +72,12 @@ export default {
     setFeed(feedType) {
       this.$store.state.articles.feed = [];
       if (feedType === "global") {
-        debugger
         this.activeFeed = "global";
         this.$store.dispatch("articles/getGlobalFeed");
       } else if (feedType === "user") {
-        debugger
         this.activeFeed = "user";
         this.$store.dispatch("articles/getUserFeed", {
-          token: this.$store.getters["users/user"].token
+          token: localStorage.getItem("token")
         });
       } else if (feedType === "tag") {
         this.activeFeed = "tag";
@@ -95,19 +93,18 @@ export default {
     }
   },
   created() {
-    debugger
-    if(this.$store.getters["users/username"]){
+    if (this.$store.getters["users/isLoggedIn"]) {
       this.setFeed("user");
-    }else{
-    this.setFeed("global");
+    } else {
+      this.setFeed("global");
     }
   },
   computed: {
     globalArticles() {
       return this.$store.state.articles.feed || [];
     },
-    username() {
-      return this.$store.getters["users/username"];
+    isLoggedIn() {
+      return this.$store.getters["users/isLoggedIn"];
     }
   }
 };

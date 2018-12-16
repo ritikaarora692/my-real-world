@@ -41,20 +41,22 @@ export default {
   },
   methods: {
     createArticle() {
-      debugger
-      if(this.tagList){
-          var tags = this.tagList.split(",");
+      debugger;
+      if (this.tagList.length > 0) {
+        var tags = this.tagList.split(",");
       }
-      console.log(tags);
-      this.$store.dispatch("articles/createArticle", {
-        title: this.title,
-        description: this.description,
-        body: this.body,
-        tagList: tags,
-        token: this.$store.getters["users/user"].token
-      }) .then(() => {
-          this.$router.push({ path: '/articles/'+this.$store.state.articles.article.slug });
-          
+      this.$store
+        .dispatch("articles/createArticle", {
+          title: this.title,
+          description: this.description,
+          body: this.body,
+          tagList: tags,
+          token: localStorage.getItem("token")
+        })
+        .then(() => {
+          this.$router.push({
+            path: "/articles/" + this.$store.state.articles.article.slug
+          });
         });
     }
   }

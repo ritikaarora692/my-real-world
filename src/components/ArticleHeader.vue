@@ -55,23 +55,23 @@ export default {
     },
     deleteArticle() {
       this.$store
-            .dispatch("articles/deleteArticle", {
-              slug: this.article.slug,
-              token: this.$store.getters["users/user"].token
-            })
-            .then(() => {
-              this.$router.push({
-          path: "/"
+        .dispatch("articles/deleteArticle", {
+          slug: this.article.slug,
+          token: localStorage.getItem("token")
+        })
+        .then(() => {
+          this.$router.push({
+            path: "/"
+          });
         });
-            });
     },
     toggleArticleFavorite() {
-      if (this.$store.getters["users/user"]) {
+      if (this.$store.getters["users/isLoggedIn"]) {
         if (this.article.favorited == false) {
           this.$store
             .dispatch("articles/favoriteArticle", {
               slug: this.article.slug,
-              token: this.$store.getters["users/user"].token
+              token: localStorage.getItem("token")
             })
             .then(() => {
               this.$store.dispatch("articles/getGlobalFeed");
@@ -80,7 +80,7 @@ export default {
           this.$store
             .dispatch("articles/unfavoriteArticle", {
               slug: this.article.slug,
-              token: this.$store.getters["users/user"].token
+              token: localStorage.getItem("token")
             })
             .then(() => {
               this.$store.dispatch("articles/getGlobalFeed");
@@ -88,13 +88,14 @@ export default {
         }
       } else {
         this.$router.push({
-          path: "/register"
+          path: "/login"
         });
       }
     }
   },
   computed: {
     username() {
+      debugger;
       return this.$store.getters["users/username"];
     }
   }

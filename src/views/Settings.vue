@@ -39,34 +39,31 @@ export default {
   computed: {
     user() {
       return this.$store.getters["users/user"];
-  },
-  userImage() {
-    debugger
-      if(this.user.image == ""){
+    },
+    userImage() {
+      if (this.user.image == "") {
         return "https://static.productionready.io/images/smiley-cyrus.jpg";
-      }else{
-        this.user.image;
+      } else {
+        return this.user.image;
       }
-  }
-},
-methods : {
-  updateSettings(){
-    debugger
-    this.$store
+    }
+  },
+  methods: {
+    updateSettings() {
+      this.$store
         .dispatch("users/updateUser", {
           username: document.getElementById("myUsername").value,
           email: document.getElementById("myEmail").value,
           bio: document.getElementById("myBio").value,
           image: document.getElementById("myImage").value,
-          token: this.user.token
+          token: localStorage.getItem("token")
         })
         .then(() => {
-          debugger
           this.$router.push({
             path: "/@" + document.getElementById("myUsername").value
           });
         });
+    }
   }
-}
-}
+};
 </script>

@@ -11,7 +11,8 @@
       <a href class="comment-author">{{comment.author.username}}</a>
       <span class="date-posted">{{formatDate(comment.createdAt)}}</span>
       <span class="mod-options" :v-if="username == comment.author.username">
-        <i class="ion-edit"></i>
+        <i class="ion-edit"  @click="editComment"></i>
+        &nbsp;
         <i class="ion-trash-a " @click="deleteComment"></i>
       </span>
     </div>
@@ -26,23 +27,24 @@ export default {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
     },
-    deleteComment(){
-      debugger
+    deleteComment() {
       this.$store
-            .dispatch("comments/deleteComment", {
-              slug:  this.$store.state.articles.article.slug,
-              commentId : this.comment.id,
-              token: this.$store.getters["users/user"].token
-            }).then(() => {
+        .dispatch("comments/deleteComment", {
+          slug: this.$store.state.articles.article.slug,
+          commentId: this.comment.id,
+          token: localStorage.getItem("token")
+        })
+        .then(() => {
           this.$store.dispatch("comments/getComments", {
-        slug: this.$store.state.articles.article.slug
-      })});
+            slug: this.$store.state.articles.article.slug
+          });
+        });
     }
   },
   computed: {
     username() {
       return this.$store.getters["users/username"];
+    }
   }
-  }
-}
+};
 </script>
