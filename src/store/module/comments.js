@@ -32,9 +32,18 @@ export default {
             body
           }
         });
-        if (response.data) {
-          commit("addComment", response.data);
-        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    deleteComment: async function({ commit }, { slug, commentId, token }) {
+      debugger
+      setToken(token);
+      try {
+        let route = "/articles/";
+        route += slug+"/comments/"+commentId;
+        await api.delete(route);
       } catch (e) {
         console.error(e);
         throw e;

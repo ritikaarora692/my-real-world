@@ -13,14 +13,13 @@ export default {
       state.count = articlesCount;
     },
     setArticle(state, { article }) {
-      debugger;
       state.article = article;
     }
   },
   actions: {
     async getGlobalFeed({ commit }, payload = { page: 1 }) {
+      debugger
       let route = "/articles";
-      debugger;
       if (payload) {
         const {
           tag = null,
@@ -34,21 +33,21 @@ export default {
         route += page ? `?offset=${page - 1}` : "";
         //route += page ? page : "";
       }
-      debugger;
       const response = await api.get(route);
-      debugger;
       commit("setArticles", response.data);
     },
     async getUserFeed({ commit }, payload = { page: 1 }) {
-      clearToken();
+      debugger
+      setToken(payload.token);
       let route = "/articles/feed";
       if (payload) {
         const { page = 1 } = payload;
         // route += page ? `?offset=${(page - 1) * 10} & limit=10` : "";
         route += page ? `?offset=${page - 1}` : "";
-        setToken(payload.token);
       }
+      debugger
       const response = await api.get(route);
+      debugger
       commit("setArticles", response.data);
     },
     async getArticle({ commit }, slug) {
@@ -72,11 +71,7 @@ export default {
           }
         });
         if (response.data) {
-          debugger;
           commit("setArticle", response.data);
-          this.$router.push({
-            path: "/articles/" + response.data.slug
-          });
         }
       } catch (e) {
         console.error(e);
@@ -87,7 +82,6 @@ export default {
       { commit },
       { title, description, body, tagList, slug, token }
     ) {
-      debugger;
       let route = "/articles/";
       route += slug;
       setToken(token);
@@ -101,7 +95,6 @@ export default {
           }
         });
         if (response.data) {
-          debugger;
           commit("setArticle", response.data);
         }
       } catch (e) {
@@ -115,10 +108,8 @@ export default {
         let route = "/articles/";
         route += slug;
         route += "/favorite";
-        debugger;
         const response = await api.post(route);
         if (response.data) {
-          debugger;
           commit("setArticle", response.data);
         }
       } catch (e) {
@@ -132,12 +123,21 @@ export default {
         let route = "/articles/";
         route += slug;
         route += "/favorite";
-        debugger;
         const response = await api.delete(route);
         if (response.data) {
-          debugger;
           commit("setArticle", response.data);
         }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    deleteArticle: async function({ commit }, { slug, token }) {
+      setToken(token);
+      try {
+        let route = "/articles/";
+        route += slug;
+        const response = await api.delete(route);
       } catch (e) {
         console.error(e);
         throw e;

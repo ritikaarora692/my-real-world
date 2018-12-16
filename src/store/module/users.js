@@ -29,7 +29,6 @@ export default {
       commit("setUser", user);
     },
     getProfile: async function({ commit }, username) {
-      debugger;
       let route = "/profiles/";
       route += username;
       const response = await api.get(route);
@@ -65,6 +64,26 @@ export default {
         });
         if (response.data.user) {
           setToken(response.data.user.token);
+          commit("setUser", response.data.user);
+        }
+      } catch (e) {
+        console.error(e);
+        throw e;
+      }
+    },
+    updateUser: async function({ commit }, { username, email, bio, image, token }) {
+      debugger
+      setToken(token);
+      try {
+        const response = await api.put("/user", {
+          user: {
+            email,
+            bio,
+            username,
+            image
+          }
+        });
+        if (response.data.user) {
           commit("setUser", response.data.user);
         }
       } catch (e) {

@@ -15,18 +15,23 @@
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link" v-if="username" @click="setFeed('user');" :class="{ active : activeFeed ==='user'}">Your Feed</a>
+              <a class="nav-link" v-if="username" @click="setFeed('user');" :class="{ active : activeFeed ==='user' }">Your Feed</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" @click="setFeed('global');" :class="{active: activeFeed ==='global'}">Global Feed</a>
+              <a class="nav-link" @click="setFeed('global');" :class="{active: activeFeed ==='global' }">Global Feed</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" v-if="activeTag" :class="{active: activeFeed ==='tag'}">#{{activeTag}}</a>
             </li>
           </ul>
         </div>
+        <div v-if="globalArticles.length>0">
         <ArticlePreview v-for="article in globalArticles" :key="article.slug" :article="article">
         </ArticlePreview>
+        </div>
+        <div v-else class="article-preview">
+          No articles are here... yet.
+      </div>
       </div>
 
       <div class="col-md-3">
@@ -65,17 +70,18 @@ export default {
   },
   methods: {
     setFeed(feedType) {
-      debugger;
+      this.$store.state.articles.feed = [];
       if (feedType === "global") {
+        debugger
         this.activeFeed = "global";
         this.$store.dispatch("articles/getGlobalFeed");
       } else if (feedType === "user") {
+        debugger
         this.activeFeed = "user";
         this.$store.dispatch("articles/getUserFeed", {
           token: this.$store.getters["users/user"].token
         });
       } else if (feedType === "tag") {
-        debugger;
         this.activeFeed = "tag";
         this.$store.dispatch("articles/getGlobalFeed", {
           tag: this.activeTag,
@@ -84,13 +90,17 @@ export default {
       }
     },
     setTagValue(programming) {
-      debugger;
       this.activeTag = programming;
       this.setFeed("tag");
     }
   },
   created() {
+    debugger
+    if(this.$store.getters["users/username"]){
+      this.setFeed("user");
+    }else{
     this.setFeed("global");
+    }
   },
   computed: {
     globalArticles() {

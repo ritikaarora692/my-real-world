@@ -29,7 +29,7 @@
         <div class="articles-toggle">
           <ul class="nav nav-pills outline-active">
             <li class="nav-item">
-              <a class="nav-link" :class="{active: !isFavorite}" href="">My Articles</a>
+              <a class="nav-link" :class="{active: !isFavorite}" @click="authorFeed();">My Articles</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" :class="{active: isFavorite}" @click="favoriteFeed();">Favorited Articles</a>
@@ -71,7 +71,6 @@ export default {
       return this.$store.state.users.profile;
     },
     userfeed() {
-      debugger;
       return this.$store.state.articles.feed;
     }
   },
@@ -82,7 +81,13 @@ export default {
         favorited: this.username,
         page: 1
       });
-      debugger;
+    },
+    authorFeed() {
+      this.isFavorite = false;
+      this.$store.dispatch("articles/getGlobalFeed", {
+      author: this.username,
+      page: 1
+    });
     }
   }
 };

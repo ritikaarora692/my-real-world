@@ -12,9 +12,11 @@
       <div class="row article-content">
         <div class="col-md-12" v-if="article">
           <p>{{article.body}}</p>
-          <div v-for="tag in article.tags" :key=tag>
-              <div class="tag-pill tag-default">tag</div>
-          </div>
+          <ul class="tag-list" >
+            <li class="tag-default tag-pill tag-outline"  v-for="tag in article.tagList" :key="tag">
+              {{tag}}
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -33,7 +35,7 @@
               <textarea v-model="commentText" class="form-control" placeholder="Write a comment..." rows="3"></textarea>
             </div>
             <div class="card-footer" v-if="user">
-              <img src="user.image" class="comment-author-img">
+              <img :src="user.image" class="comment-author-img">
               <button @click="postComment" class="btn btn-sm btn-primary">Post Comment</button>
             </div>
             <div class="card-footer" v-else>
@@ -72,7 +74,6 @@ export default {
     };
   },
   created() {
-    debugger;
     this.$store.dispatch("articles/getArticle", this.slug);
 
     this.$store
@@ -104,6 +105,9 @@ export default {
           token: this.$store.getters["users/user"].token
         })
         .then(() => {
+          this.$store.dispatch("comments/getComments", {
+        slug: this.slug
+      });
           this.areCommentsLoading = false;
           this.commentText = "";
         });

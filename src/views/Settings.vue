@@ -9,21 +9,21 @@
         <form>
           <fieldset>
               <fieldset class="form-group">
-                <input class="form-control" type="text" placeholder="URL of profile picture">
+                <input class="form-control" type="text" id="myImage" placeholder="URL of profile picture" :value="userImage">
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Your Name">
+                <input class="form-control form-control-lg" id="myUsername" type="text" placeholder="Your Name" :value="user.username">
+              </fieldset> 
+              <fieldset class="form-group">
+                <textarea class="form-control form-control-lg" id="myBio" rows="8" placeholder="Short bio about you" :value="user.bio"></textarea>
               </fieldset>
               <fieldset class="form-group">
-                <textarea class="form-control form-control-lg" rows="8" placeholder="Short bio about you"></textarea>
+                <input class="form-control form-control-lg" id="myEmail" type="text" placeholder="Email" :value="user.email">
               </fieldset>
               <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="text" placeholder="Email">
+                <input class="form-control form-control-lg" id="myPassword" type="password" placeholder="Password">
               </fieldset>
-              <fieldset class="form-group">
-                <input class="form-control form-control-lg" type="password" placeholder="Password">
-              </fieldset>
-              <button class="btn btn-lg btn-primary pull-xs-right">
+              <button class="btn btn-lg btn-primary pull-xs-right" @click="updateSettings">
                 Update Settings
               </button>
           </fieldset>
@@ -34,3 +34,39 @@
   </div>
 </div>
 </template>
+<script>
+export default {
+  computed: {
+    user() {
+      return this.$store.getters["users/user"];
+  },
+  userImage() {
+    debugger
+      if(this.user.image == ""){
+        return "https://static.productionready.io/images/smiley-cyrus.jpg";
+      }else{
+        this.user.image;
+      }
+  }
+},
+methods : {
+  updateSettings(){
+    debugger
+    this.$store
+        .dispatch("users/updateUser", {
+          username: document.getElementById("myUsername").value,
+          email: document.getElementById("myEmail").value,
+          bio: document.getElementById("myBio").value,
+          image: document.getElementById("myImage").value,
+          token: this.user.token
+        })
+        .then(() => {
+          debugger
+          this.$router.push({
+            path: "/@" + document.getElementById("myUsername").value
+          });
+        });
+  }
+}
+}
+</script>

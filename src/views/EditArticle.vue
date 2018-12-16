@@ -7,17 +7,17 @@
         <form>
           <fieldset>
             <fieldset class="form-group">
-                <input :value="article.title" type="text" class="form-control form-control-lg" placeholder="Article Title">
+                <input :value="article.title" id="myTitle" type="text" class="form-control form-control-lg" placeholder="Article Title">
                 
             </fieldset>
             <fieldset class="form-group">
-                <input :value="article.description" type="text" class="form-control" placeholder="What's this article about?">
+                <input :value="article.description" id="myDescription" type="text" class="form-control" placeholder="What's this article about?">
             </fieldset>
             <fieldset class="form-group">
-                <textarea :value="article.body" class="form-control" rows="8" placeholder="Write your article (in markdown)"></textarea>
+                <textarea :value="article.body" id="myBody" class="form-control" rows="8" placeholder="Write your article (in markdown)"></textarea>
             </fieldset>
             <fieldset class="form-group">
-                <input :value="article.tagList" type="text" class="form-control" placeholder="Enter tags"><div class="tag-list"></div>
+                <input :value="article.tagList" id="myTags" type="text" class="form-control" placeholder="Enter tags"><div class="tag-list"></div>
             </fieldset>
             <button @click="updateArticle" class="btn btn-lg pull-xs-right btn-primary" type="button">
                 Publish Article
@@ -42,10 +42,10 @@ export default {
     updateArticle() {
       this.$store
         .dispatch("articles/updateArticle", {
-          title: this.article.title,
-          description: this.article.description,
-          body: this.article.body,
-          tagList: this.article.tagList,
+          title: document.getElementById("myTitle").value,
+          description: document.getElementById("myDescription").value,
+          body: document.getElementById("myBody").value,
+          tagList: document.getElementById("myTags").value,
           slug: this.article.slug,
           token: this.$store.getters["users/user"].token
         })

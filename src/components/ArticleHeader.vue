@@ -4,7 +4,8 @@
       <img :src="article.author.image">
     </a>
     <div class="info">
-      <a href class="author">{{article.author.username}}</a>
+      <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}
+              </router-link>
       <span class="date">{{formatDate(article.createdAt)}}</span>
     </div>
     <button v-if="article.author.username != username" class="btn btn-sm btn-outline-secondary">
@@ -15,9 +16,9 @@
     <router-link :to="{path: '/editor/'+ article.slug}" class="preview-link">
       <button
         v-if="article.author.username == username"
-        class="btn btn-sm btn-outline-secondary"
+        class="btn btn-sm btn-outline-secondary" 
       >
-        <i class="ion-plus-round"></i>
+        <i class="ion-edit"></i>
         &nbsp;
         Edit Article
       </button>
@@ -25,7 +26,7 @@
     &nbsp;&nbsp;
     <button
       v-if="article.author.username != username"
-      class="btn btn-sm btn-outline-primary"
+      class="btn btn-sm btn-outline-primary" @click="toggleArticleFavorite" :class="{'btn-outline-primary': !article.favorited }"
     >
       <i class="ion-heart"></i>
       &nbsp;
@@ -35,9 +36,9 @@
     <button
       @click="deleteArticle"
       v-if="article.author.username == username"
-      class="btn btn-sm btn-outline-primary"
+      class="btn btn-outline-danger btn-sm"
     >
-      <i class="ion-heart"></i>
+      <i class="ion-trash-a"></i>
       &nbsp;
       Delete Article
     </button>
@@ -53,7 +54,43 @@ export default {
       return moment(dateString).format("MMMM Do, YYYY");
     },
     deleteArticle() {
-      debugger;
+      this.$store
+            .dispatch("articles/deleteArticle", {
+              slug: this.article.slug,
+              token: this.$store.getters["users/user"].token
+            })
+            .then(() => {
+              this.$router.push({
+          path: "/"
+        });
+            });
+    },
+    toggleArticleFavorite() {
+      if (this.$store.getters["users/user"]) {
+        if (this.article.favorited == false) {
+          this.$store
+            .dispatch("articles/favoriteArticle", {
+              slug: this.article.slug,
+              token: this.$store.getters["users/user"].token
+            })
+            .then(() => {
+              this.$store.dispatch("articles/getGlobalFeed");
+            });
+        } else {
+          this.$store
+            .dispatch("articles/unfavoriteArticle", {
+              slug: this.article.slug,
+              token: this.$store.getters["users/user"].token
+            })
+            .then(() => {
+              this.$store.dispatch("articles/getGlobalFeed");
+            });
+        }
+      } else {
+        this.$router.push({
+          path: "/register"
+        });
+      }
     }
   },
   computed: {

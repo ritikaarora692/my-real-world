@@ -29,6 +29,10 @@
               <router-link class="nav-link" :to="`/@${username}`">{{username}}
               </router-link>
           </li>
+          <li v-if="username" class="nav-item">
+              <a class="nav-link" @click="logout">logout
+              </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -39,6 +43,12 @@ export default {
   computed: {
     username() {
       return this.$store.getters["users/username"];
+    }
+  },
+  methods :{
+    logout(){
+      debugger
+      //remove token
     }
   }
 };
