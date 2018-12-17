@@ -63,7 +63,10 @@ export default {
       }
     },
     logout({ commit }) {
+      debugger;
       localStorage.removeItem("token");
+      commit("setUser", null);
+      commit("setUsername", null);
       commit("logout");
     },
     registerUser: async function({ commit }, { email, password, username }) {

@@ -60,6 +60,7 @@ export default {
   },
   computed: {
     username() {
+      debugger;
       return this.$store.getters["users/username"];
     }
   }

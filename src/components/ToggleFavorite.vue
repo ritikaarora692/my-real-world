@@ -5,7 +5,7 @@
     :class="{'btn-outline-primary': !article.favorited, 'pull-xs-right': isPreview, 'btn-primary':isPreview,'btn-primary': !isPreview }"
   >
     <i class="ion-heart"></i>
-    <span v-if="this.isPreview">{{article.favoritesCount}}</span>
+    <span v-if="this.isPreview">  {{article.favoritesCount}}</span>
     <span v-else>
       &nbsp;
       Favorite Post
