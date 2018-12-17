@@ -46,7 +46,6 @@ export default {
   },
   methods: {
     logout() {
-      debugger;
       this.$store.clear;
       this.$store
         .dispatch("users/logout")
