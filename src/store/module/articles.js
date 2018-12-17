@@ -18,8 +18,9 @@ export default {
     deleteArticle() {}
   },
   actions: {
-    async getGlobalFeed({ commit }, payload = { page: 1 }) {
+    async getGlobalFeed({ commit }, payload ) {
       let route = "/articles";
+      debugger
       if (payload) {
         const {
           tag = null,
@@ -30,21 +31,26 @@ export default {
         route += tag ? `?tag=${tag}&` : "";
         route += author ? `?author=${author}&` : "";
         route += favorited ? `?favorited=${favorited}&` : "";
-        route += page ? `?offset=${page - 1}` : "";
-        //route += page ? page : "";
+        route += payload.limit ? `?limit=${payload.limit}&` : "";
+        route +=  `?offset=${payload.offset}`;
       }
+      debugger
       const response = await api.get(route);
+      debugger
       commit("setArticles", response.data);
     },
-    async getUserFeed({ commit }, payload = { page: 1 }) {
+    async getUserFeed({ commit }, payload = { limit,offset }) {
+      debugger
       setToken(payload.token);
       let route = "/articles/feed";
       if (payload) {
         const { page = 1 } = payload;
-        // route += page ? `?offset=${(page - 1) * 10} & limit=10` : "";
-        route += page ? `?offset=${page - 1}` : "";
+        route += limit ? `?limit=${limit}&` : "";
+        route += page ? `?offset=${offset}` : "";
       }
+      debugger
       const response = await api.get(route);
+      debugger
       commit("setArticles", response.data);
     },
     async getArticle({ commit }, slug) {
