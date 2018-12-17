@@ -57,7 +57,6 @@ export default {
   },
   methods: {
     createArticle() {
-      debugger;
       if (this.tagList.length > 0) {
         var tags = this.tagList.split(",");
       }

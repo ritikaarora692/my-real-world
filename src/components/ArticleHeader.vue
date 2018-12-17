@@ -19,17 +19,8 @@
         Edit Article
       </button>
     </router-link>&nbsp;&nbsp;
-    <button
-      v-if="article.author.username != username"
-      class="btn btn-sm btn-outline-primary"
-      @click="toggleArticleFavorite"
-      :class="{'btn-outline-primary': !article.favorited }"
-    >
-      <i class="ion-heart"></i>
-      &nbsp;
-      Favorite Post
-      <span class="counter">({{article.favoritesCount}})</span>
-    </button>
+    <ToggleFavorite v-if="article.author.username != username" :article="article" :isPreview="false">
+      </ToggleFavorite>
     <button
       @click="deleteArticle"
       v-if="article.author.username == username"
@@ -44,8 +35,12 @@
 
 <script>
 import moment from "moment";
+import ToggleFavorite from "@/components/ToggleFavorite";
 export default {
   props: ["article"],
+  components: {
+    ToggleFavorite
+  },
   methods: {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
@@ -62,33 +57,6 @@ export default {
             path: "/"
           });
         });
-    },
-    toggleArticleFavorite() {
-      if (this.$store.getters["users/isLoggedIn"]) {
-        if (this.article.favorited == false) {
-          this.$store
-            .dispatch("articles/favoriteArticle", {
-              slug: this.article.slug,
-              token: localStorage.getItem("token")
-            })
-            .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
-            });
-        } else {
-          this.$store
-            .dispatch("articles/unfavoriteArticle", {
-              slug: this.article.slug,
-              token: localStorage.getItem("token")
-            })
-            .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
-            });
-        }
-      } else {
-        this.$router.push({
-          path: "/login"
-        });
-      }
     }
   },
   computed: {

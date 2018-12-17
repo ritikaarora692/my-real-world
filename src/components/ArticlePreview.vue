@@ -8,14 +8,7 @@
         <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}</router-link>
         <span class="date">{{formatDate(article.createdAt)}}</span>
       </div>
-      <button
-        @click="toggleArticleFavorite"
-        class="btn btn-sm pull-xs-right btn-primary"
-        :class="{'btn-outline-primary': !this.article.favorited }"
-      >
-        <i class="ion-heart"></i>
-        {{article.favoritesCount}}
-      </button>
+      <ToggleFavorite :article="article" :isPreview="true"></ToggleFavorite>
     </div>
     <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
       <h1>{{article.title}}</h1>
@@ -34,38 +27,15 @@
 
 <script>
 import moment from "moment";
+import ToggleFavorite from "@/components/ToggleFavorite.vue";
 export default {
   props: ["article"],
+  components: {
+    ToggleFavorite
+  },
   methods: {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
-    },
-    toggleArticleFavorite() {
-      if (this.$store.getters["users/isLoggedIn"]) {
-        if (this.article.favorited == false) {
-          this.$store
-            .dispatch("articles/favoriteArticle", {
-              slug: this.article.slug,
-              token: localStorage.getItem("token")
-            })
-            .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
-            });
-        } else {
-          this.$store
-            .dispatch("articles/unfavoriteArticle", {
-              slug: this.article.slug,
-              token: localStorage.getItem("token")
-            })
-            .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
-            });
-        }
-      } else {
-        this.$router.push({
-          path: "/login"
-        });
-      }
     }
   }
 };
