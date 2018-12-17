@@ -38,11 +38,9 @@
 export default {
   computed: {
     isLoggedIn() {
-      debugger;
       return this.$store.getters["users/isLoggedIn"];
     },
     username() {
-      debugger;
       return this.$store.getters["users/username"];
     }
   },

@@ -1,20 +1,16 @@
 <template>
   <button
-    class="btn btn-sm "
+    class="btn btn-sm"
     @click="toggleArticleFavorite"
     :class="{'btn-outline-primary': !article.favorited, 'pull-xs-right': isPreview, 'btn-primary':isPreview,'btn-primary': !isPreview }"
   >
     <i class="ion-heart"></i>
-    <span v-if="this.isPreview">
-            {{article.favoritesCount}}
-          </span>
-          <span v-else>
-              &nbsp;
-    Favorite Post
-    <span
-      class="counter"
-    >({{article.favoritesCount}})</span>
-          </span>
+    <span v-if="this.isPreview">{{article.favoritesCount}}</span>
+    <span v-else>
+      &nbsp;
+      Favorite Post
+      <span class="counter">({{article.favoritesCount}})</span>
+    </span>
   </button>
 </template>
 <script>
@@ -22,7 +18,6 @@ export default {
   props: ["isPreview", "article"],
   methods: {
     toggleArticleFavorite() {
-      debugger;
       this.isPreview;
       this.article;
       if (this.$store.getters["users/isLoggedIn"]) {

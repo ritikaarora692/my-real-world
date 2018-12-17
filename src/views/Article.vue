@@ -97,7 +97,6 @@ export default {
       return this.$store.state.articles.article;
     },
     user() {
-      debugger;
       return this.$store.getters["users/user"];
     },
     isLoggedIn() {

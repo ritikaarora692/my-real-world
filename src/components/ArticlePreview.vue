@@ -11,7 +11,7 @@
       <ToggleFavorite :article="article" :isPreview="true"></ToggleFavorite>
     </div>
     <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
-      <h1>{{article.title}}</h1>
+      <h1>{{article.title}}</h1> 
       <p>{{article.description}}.</p>
       <span>Read more...</span>
       <ul class="tag-list">
