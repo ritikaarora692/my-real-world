@@ -5,7 +5,7 @@
     :class="{'btn-outline-primary': !article.favorited, 'pull-xs-right': isPreview, 'btn-primary':isPreview,'btn-primary': article.favorited }"
   >
     <i class="ion-heart"></i>
-    <span v-if="this.isPreview">  {{article.favoritesCount}}</span>
+    <span v-if="this.isPreview">&nbsp; &nbsp;{{article.favoritesCount}}</span>
     <span v-else>
       &nbsp;
       Favorite Post
@@ -47,6 +47,16 @@ export default {
                   offset: 0,
                   limit: 10
                 });
+              } else if (this.activeFeed == "tag") {
+                this.$store
+                  .dispatch("articles/getGlobalFeed", {
+                    tag: "programming",
+                    offset: this.offset,
+                    limit: this.limit
+                  })
+                  .catch(() => {
+                    this.error = "Error while loading feed.";
+                  });
               }
             });
         } else {
@@ -77,6 +87,16 @@ export default {
                   offset: 0,
                   limit: 10
                 });
+              } else if (this.activeFeed == "tag") {
+                this.$store
+                  .dispatch("articles/getGlobalFeed", {
+                    tag: "programming",
+                    offset: this.offset,
+                    limit: this.limit
+                  })
+                  .catch(() => {
+                    this.error = "Error while loading feed.";
+                  });
               }
             });
         }
