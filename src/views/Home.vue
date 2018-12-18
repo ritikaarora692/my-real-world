@@ -32,8 +32,8 @@
         <div v-else class="article-preview">
           No articles are here... yet.
       </div>
-        <button class="btn btn-sm btn-outline-primary" v-if="offset >= 10" @click="getPreviousArticles">Previous</button>  &nbsp;  &nbsp; 
-        <button class="btn btn-sm btn-outline-primary" v-if="globalArticles.length==10" @click="getNextArticles">Next</button>
+        <button class="btn btn-sm btn-outline-primary " v-if="offset >= 10 && this.$store.state.articles.count > 0 " @click="getPreviousArticles">Previous</button>  &nbsp;  &nbsp; 
+        <button class="btn btn-sm btn-outline-primary " v-if="offset <= this.$store.state.articles.count  && this.$store.state.articles.count > 0" @click="getNextArticles">Next</button>
       </div>
 
       <div class="col-md-3">

@@ -18,39 +18,40 @@ export default {
     deleteArticle() {}
   },
   actions: {
-    async getGlobalFeed({ commit }, payload ) {
+    async getGlobalFeed({ commit }, payload) {
       let route = "/articles";
-      debugger
+      debugger;
       if (payload) {
         const {
           tag = null,
           author = null,
           favorited = null,
-          page = 1
+          limit = null,
+          offset = null
         } = payload;
         route += tag ? `?tag=${tag}&` : "";
         route += author ? `?author=${author}&` : "";
         route += favorited ? `?favorited=${favorited}&` : "";
-        route += payload.limit ? `?limit=${payload.limit}&` : "";
-        route +=  `?offset=${payload.offset}`;
+        route += limit ? `?limit=${limit}&` : "";
+        route += `offset=${offset}`;
       }
-      debugger
+      debugger;
       const response = await api.get(route);
-      debugger
+      debugger;
       commit("setArticles", response.data);
     },
-    async getUserFeed({ commit }, payload = { limit,offset }) {
-      debugger
+    async getUserFeed({ commit }, payload) {
+      debugger;
       setToken(payload.token);
       let route = "/articles/feed";
       if (payload) {
-        const { page = 1 } = payload;
+        const { limit = null, offset = null } = payload;
         route += limit ? `?limit=${limit}&` : "";
-        route += page ? `?offset=${offset}` : "";
+        route += offset ? `?offset=${offset}` : "";
       }
-      debugger
+      debugger;
       const response = await api.get(route);
-      debugger
+      debugger;
       commit("setArticles", response.data);
     },
     async getArticle({ commit }, slug) {

@@ -2,7 +2,7 @@
   <button
     class="btn btn-sm"
     @click="toggleArticleFavorite"
-    :class="{'btn-outline-primary': !article.favorited, 'pull-xs-right': isPreview, 'btn-primary':isPreview,'btn-primary': !isPreview }"
+    :class="{'btn-outline-primary': !article.favorited, 'pull-xs-right': isPreview, 'btn-primary':isPreview,'btn-primary': article.favorited }"
   >
     <i class="ion-heart"></i>
     <span v-if="this.isPreview">  {{article.favoritesCount}}</span>

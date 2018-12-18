@@ -4462,6 +4462,12 @@
   
   .pull-xs-none {
     float: none !important; }
+
+  .pull-xs-center {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center!important;
+    }
   
   @media (min-width: 544px) {
     .pull-sm-left {

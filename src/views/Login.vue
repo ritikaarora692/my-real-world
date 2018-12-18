@@ -12,7 +12,7 @@
             <li v-for="error in errors" :key="error.message">{{error.message}}</li>
           </ul>
 
-          <form>
+          <form @submit.prevent="login">
             <fieldset class="form-group">
               <input
                 class="form-control form-control-lg"
