@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col-md-10 offset-md-1 col-xs-12">
           <form>
+            <div class="error-messages">{{error}}</div>
             <fieldset>
               <fieldset class="form-group">
                 <input
@@ -52,7 +53,8 @@ export default {
       title: "",
       description: "",
       body: "",
-      tagList: []
+      tagList: [],
+      error: ""
     };
   },
   methods: {
@@ -72,6 +74,9 @@ export default {
           this.$router.push({
             path: "/articles/" + this.$store.state.articles.article.slug
           });
+        })
+        .catch(() => {
+          this.error = "Article Title, Body And Description are mandatory.";
         });
     }
   }

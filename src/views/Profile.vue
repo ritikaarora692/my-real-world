@@ -18,6 +18,7 @@
     </div>
 
     <div class="container">
+      <div class="error-messages">{{error}}</div>
       <div class="row">
         <div class="col-xs-12 col-md-10 offset-md-1">
           <div class="articles-toggle">
@@ -39,7 +40,7 @@
             </ul>
           </div>
 
-          <ArticlePreview v-for="article in userfeed" :key="article.slug" :article="article"></ArticlePreview>
+          <ArticlePreview v-for="article in userfeed" :key="article.slug" :article="article" :activeFeed="activeFeed"></ArticlePreview>
         </div>
       </div>
     </div>
@@ -51,18 +52,25 @@ export default {
   props: ["username"],
   data: function() {
     return {
-      isFavorite: false
+      isFavorite: false,
+      error: "",
+      activeFeed: ""
     };
   },
   components: {
     ArticlePreview
   },
   created() {
+    this.activeFeed = "author";
     this.$store.dispatch("users/getProfile", this.username);
-    this.$store.dispatch("articles/getGlobalFeed", {
-      author: this.username,
-      page: 1
-    });
+    this.$store
+      .dispatch("articles/getGlobalFeed", {
+        author: this.username,
+        page: 1
+      })
+      .catch(() => {
+        this.error = "Error while loading feed.";
+      });
   },
   computed: {
     profile() {
@@ -75,6 +83,7 @@ export default {
   methods: {
     favoriteFeed() {
       this.isFavorite = true;
+      this.activeFeed = "favorite";
       this.$store.dispatch("articles/getGlobalFeed", {
         favorited: this.username,
         page: 1

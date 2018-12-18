@@ -8,9 +8,7 @@
             <router-link to="/login">Have an account?</router-link>
           </p>
 
-          <ul class="error-messages">
-            <li v-for="error in errors" :key="error.message">{{error.message}}</li>
-          </ul>
+          <div class="error-messages">{{error}}</div>
 
           <form>
             <fieldset class="form-group">
@@ -52,7 +50,7 @@ export default {
       password: "",
       email: "",
       username: "",
-      errors: []
+      errors: ""
     };
   },
   methods: {
@@ -67,8 +65,8 @@ export default {
           this.errors = [];
           this.$router.push({ name: "home" });
         })
-        .catch(err => {
-          this.errors.push(err);
+        .catch(() => {
+          this.error = "Username is already taken";
         });
     }
   }

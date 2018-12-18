@@ -50,6 +50,7 @@
               <router-link class="nav-link" to="/register">Sign up</router-link>to post comment.
             </div>
           </form>
+          <div class="error-messages">{{error}}</div>
           <template v-if="areCommentsLoading">
             <p>Please wait while we are loading Comments</p>
           </template>
@@ -75,7 +76,8 @@ export default {
   data: function() {
     return {
       areCommentsLoading: true,
-      commentText: ""
+      commentText: "",
+      error: ""
     };
   },
   created() {
@@ -87,6 +89,10 @@ export default {
       })
       .then(() => {
         this.areCommentsLoading = false;
+      })
+      .catch(() => {
+        this.error =
+          "Could not load comments. please try again after sometime.";
       });
   },
   computed: {
@@ -118,6 +124,10 @@ export default {
           });
           this.areCommentsLoading = false;
           this.commentText = "";
+        })
+        .catch(() => {
+          this.error =
+            "Could not post comment. please try again after sometime.";
         });
     }
   }

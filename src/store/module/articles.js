@@ -18,9 +18,9 @@ export default {
     deleteArticle() {}
   },
   actions: {
+    //method to get global feed. No authentication required
     async getGlobalFeed({ commit }, payload) {
       let route = "/articles";
-      debugger;
       if (payload) {
         const {
           tag = null,
@@ -35,13 +35,11 @@ export default {
         route += limit ? `?limit=${limit}&` : "";
         route += `offset=${offset}`;
       }
-      debugger;
       const response = await api.get(route);
-      debugger;
       commit("setArticles", response.data);
     },
+    //method to get user feed. authentication required
     async getUserFeed({ commit }, payload) {
-      debugger;
       setToken(payload.token);
       let route = "/articles/feed";
       if (payload) {
@@ -49,17 +47,17 @@ export default {
         route += limit ? `?limit=${limit}&` : "";
         route += offset ? `?offset=${offset}` : "";
       }
-      debugger;
       const response = await api.get(route);
-      debugger;
       commit("setArticles", response.data);
     },
+    //method to get details of an article. Authentication required
     async getArticle({ commit }, slug) {
       let route = "/articles/";
       route += slug;
       const response = await api.get(route);
       commit("setArticle", response.data);
     },
+    //method to create new Article. Authentication required
     createArticle: async function(
       { commit },
       { title, description, body, tagList, token }
@@ -82,6 +80,7 @@ export default {
         throw e;
       }
     },
+    //method to update contents of an article. Authentication required
     updateArticle: async function(
       { commit },
       { title, description, body, tagList, slug, token }
@@ -105,6 +104,7 @@ export default {
         throw e;
       }
     },
+    //method to favorite an article. Authentication required
     favoriteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {
@@ -118,6 +118,7 @@ export default {
         throw e;
       }
     },
+    //method to unfavorite an article. Authentication required
     unfavoriteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {
@@ -131,6 +132,7 @@ export default {
         throw e;
       }
     },
+    //method to delete an article. Authentication required
     deleteArticle: async function({ commit }, { slug, token }) {
       setToken(token);
       try {

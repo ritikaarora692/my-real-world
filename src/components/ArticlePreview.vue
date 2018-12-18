@@ -8,7 +8,7 @@
         <router-link class="author" :to="`/@${article.author.username}`">{{article.author.username}}</router-link>
         <span class="date">{{formatDate(article.createdAt)}}</span>
       </div>
-      <ToggleFavorite :article="article" :isPreview="true"></ToggleFavorite>
+      <ToggleFavorite :article="article" :isPreview="true" :activeFeed="activeFeed"></ToggleFavorite>
     </div>
     <router-link :to="{path: '/articles/'+ article.slug}" class="preview-link">
       <h1>{{article.title}}</h1> 
@@ -29,7 +29,7 @@
 import moment from "moment";
 import ToggleFavorite from "@/components/ToggleFavorite.vue";
 export default {
-  props: ["article"],
+  props: ["article", "activeFeed"],
   components: {
     ToggleFavorite
   },

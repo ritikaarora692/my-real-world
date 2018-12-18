@@ -15,11 +15,9 @@
 </template>
 <script>
 export default {
-  props: ["isPreview", "article"],
+  props: ["isPreview", "article", "activeFeed"],
   methods: {
     toggleArticleFavorite() {
-      this.isPreview;
-      this.article;
       if (this.$store.getters["users/isLoggedIn"]) {
         if (this.article.favorited == false) {
           this.$store
@@ -28,7 +26,28 @@ export default {
               token: localStorage.getItem("token")
             })
             .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
+              if (this.activeFeed == "global") {
+                this.$store.dispatch("articles/getGlobalFeed", {
+                  offset: 0,
+                  limit: 10
+                });
+              } else if (this.activeFeed == "author") {
+                this.$store
+                  .dispatch("articles/getGlobalFeed", {
+                    author: this.$store.getters["users/username"],
+                    offset: 0,
+                    limit: 10
+                  })
+                  .catch(() => {
+                    this.error = "Error while loading feed.";
+                  });
+              } else if (this.activeFeed == "favorite") {
+                this.$store.dispatch("articles/getGlobalFeed", {
+                  favorited: this.$store.getters["users/username"],
+                  offset: 0,
+                  limit: 10
+                });
+              }
             });
         } else {
           this.$store
@@ -37,7 +56,28 @@ export default {
               token: localStorage.getItem("token")
             })
             .then(() => {
-              this.$store.dispatch("articles/getGlobalFeed");
+              if (this.activeFeed == "global") {
+                this.$store.dispatch("articles/getGlobalFeed", {
+                  offset: 0,
+                  limit: 10
+                });
+              } else if (this.activeFeed == "author") {
+                this.$store
+                  .dispatch("articles/getGlobalFeed", {
+                    author: this.$store.getters["users/username"],
+                    offset: 0,
+                    limit: 10
+                  })
+                  .catch(() => {
+                    this.error = "Error while loading feed.";
+                  });
+              } else if (this.activeFeed == "favorite") {
+                this.$store.dispatch("articles/getGlobalFeed", {
+                  favorited: this.$store.getters["users/username"],
+                  offset: 0,
+                  limit: 10
+                });
+              }
             });
         }
       } else {

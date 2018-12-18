@@ -11,7 +11,7 @@
       <a href class="comment-author">{{comment.author.username}}</a>
       <span class="date-posted">{{formatDate(comment.createdAt)}}</span>
       <span class="mod-options" v-if="username == comment.author.username">
-        <i class="ion-edit" @click="editComment"></i>
+        <i class="ion-edit" ></i>
         &nbsp;
         <i class="ion-trash-a" @click="deleteComment"></i>
       </span>
@@ -23,6 +23,11 @@
 import moment from "moment";
 export default {
   props: ["comment"],
+  data: function() {
+    return {
+      error: ""
+    };
+  },
   methods: {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
@@ -38,6 +43,10 @@ export default {
           this.$store.dispatch("comments/getComments", {
             slug: this.$store.state.articles.article.slug
           });
+        })
+        .catch(() => {
+          this.error =
+            "Could not load comments. Please try again after sometime.";
         });
     }
   },

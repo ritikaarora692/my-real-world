@@ -41,6 +41,11 @@ export default {
   components: {
     ToggleFavorite
   },
+  data: function() {
+    return {
+      error: ""
+    };
+  },
   methods: {
     formatDate(dateString) {
       return moment(dateString).format("MMMM Do, YYYY");
@@ -55,6 +60,10 @@ export default {
           this.$router.push({
             path: "/"
           });
+        })
+        .catch(() => {
+          this.error =
+            "Could not delete comment. Please try again after sometime.";
         });
     }
   },

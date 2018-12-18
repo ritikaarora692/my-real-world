@@ -44,7 +44,7 @@
                 >
               </fieldset>
               <fieldset class="form-group">
-                <input
+                <input disabled
                   class="form-control form-control-lg"
                   id="myPassword"
                   type="password"

@@ -15,11 +15,13 @@ export default {
     deleteComment() {}
   },
   actions: {
+    //method to load comments of an article. No Authentication required
     async getComments({ commit }, { slug }) {
       let route = "/articles/" + slug + "/comments";
       const response = await api.get(route);
       commit("setComments", response.data);
     },
+    //method to add new comment on an article. Authentication required
     addNewComment: async function({ commit }, { body, slug, token }) {
       setToken(token);
       let route = "/articles/" + slug + "/comments";
@@ -35,6 +37,7 @@ export default {
       }
       commit("deleteComment");
     },
+    //method to delete own comment on an article. Authentication required
     deleteComment: async function({ commit }, { slug, commentId, token }) {
       setToken(token);
       try {

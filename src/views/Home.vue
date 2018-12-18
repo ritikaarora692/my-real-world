@@ -10,7 +10,7 @@
 
   <div class="container page">
     <div class="row">
-
+    <div class="error-messages">{{error}}</div>
       <div class="col-md-9">
         <div class="feed-toggle">
           <ul class="nav nav-pills outline-active">
@@ -26,7 +26,7 @@
           </ul>
         </div>
         <div v-if="globalArticles.length>0">
-        <ArticlePreview v-for="article in globalArticles" :key="article.slug" :article="article">
+        <ArticlePreview v-for="article in globalArticles" :key="article.slug" :article="article" :activeFeed="activeFeed">
         </ArticlePreview>
         </div>
         <div v-else class="article-preview">
@@ -69,7 +69,8 @@ export default {
       activeFeed: "",
       activeTag: null,
       limit: 10,
-      offset: 0
+      offset: 0,
+      error: ""
     };
   },
   methods: {
@@ -77,24 +78,36 @@ export default {
       this.$store.state.articles.feed = [];
       if (feedType === "global") {
         this.activeFeed = "global";
-        this.$store.dispatch("articles/getGlobalFeed", {
-          offset: this.offset,
-          limit: this.limit
-        });
+        this.$store
+          .dispatch("articles/getGlobalFeed", {
+            offset: this.offset,
+            limit: this.limit
+          })
+          .catch(() => {
+            this.error = "Error while loading feed.";
+          });
       } else if (feedType === "user") {
         this.activeFeed = "user";
-        this.$store.dispatch("articles/getUserFeed", {
-          token: localStorage.getItem("token"),
-          offset: this.offset,
-          limit: this.limit
-        });
+        this.$store
+          .dispatch("articles/getUserFeed", {
+            token: localStorage.getItem("token"),
+            offset: this.offset,
+            limit: this.limit
+          })
+          .catch(() => {
+            this.error = "Error while loading feed.";
+          });
       } else if (feedType === "tag") {
         this.activeFeed = "tag";
-        this.$store.dispatch("articles/getGlobalFeed", {
-          tag: this.activeTag,
-          offset: this.offset,
-          limit: this.limit
-        });
+        this.$store
+          .dispatch("articles/getGlobalFeed", {
+            tag: this.activeTag,
+            offset: this.offset,
+            limit: this.limit
+          })
+          .catch(() => {
+            this.error = "Error while loading feed.";
+          });
       }
     },
     setTagValue(programming) {

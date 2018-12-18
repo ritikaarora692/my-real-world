@@ -7,10 +7,7 @@
           <p class="text-xs-center">
             <router-link to="/register">Need an account?</router-link>
           </p>
-
-          <ul class="error-messages">
-            <li v-for="error in errors" :key="error.message">{{error.message}}</li>
-          </ul>
+          <div class="error-messages">{{error}}</div>
 
           <form @submit.prevent="login">
             <fieldset class="form-group">
@@ -43,7 +40,7 @@ export default {
     return {
       password: "",
       email: "",
-      errors: []
+      error: ""
     };
   },
   methods: {
@@ -57,8 +54,8 @@ export default {
           this.errors = [];
           this.$router.push({ name: "home" });
         })
-        .catch(err => {
-          this.errors.push(err);
+        .catch(() => {
+          this.error = "Invalid username or password.";
         });
     }
   }
